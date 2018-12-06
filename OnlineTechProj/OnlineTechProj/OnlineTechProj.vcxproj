@@ -134,12 +134,14 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="client.cpp" />
     <ClCompile Include="Dot.cpp" />
     <ClCompile Include="LTexture.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="TCPListener.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Client.h" />
     <ClInclude Include="Dot.h" />
     <ClInclude Include="LTexture.h" />
     <ClInclude Include="TCPListener.h" />
@@ -149,6 +151,7 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="dot.bmp" />
+    <Image Include="RedDot.bmp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

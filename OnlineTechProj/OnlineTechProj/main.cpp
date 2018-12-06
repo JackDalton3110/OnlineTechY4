@@ -5,6 +5,7 @@
 #include <algorithm>
 #include <SDL_image.h>
 #include <stdio.h>
+#include "Client.h"
 #include "Dot.h"
 #include "LTexture.h"
 #include "TCPListener.h"
@@ -23,8 +24,11 @@ SDL_Surface* m_ScreenSurface = NULL;
 SDL_Surface* m_ImageSurface = NULL;
 SDL_Surface* loadSurface(std::string location);
 SDL_Renderer* gRenderer;
+Dot* dot;
+Dot* chaseDot;
+Client* client;
 
-Dot dot;
+
 
 bool init()
 {
@@ -113,6 +117,12 @@ void close()
 
 int main(int argc, char* args[])
 {
+
+	dot = new Dot(false);
+	chaseDot = new Dot(true);
+	client = new Client();
+	client->run();
+
 	//Start up SDL and create window
 	if (!init())
 	{
@@ -134,7 +144,10 @@ int main(int argc, char* args[])
 			SDL_Event e;
 
 			//The dot that will be moving around on the screen
-			dot.Init(gRenderer);
+			dot->SetPosition(100, 300);
+			dot->Init(gRenderer);
+			chaseDot->Init(gRenderer);
+			
 
 			//While application is running
 			while (!quit)
@@ -149,18 +162,23 @@ int main(int argc, char* args[])
 					}
 
 					//Handle input for the dot
-					dot.handleEvent(e);
+					dot->handleEvent(e);
+					chaseDot->handleEvent(e);
+					
 				}
 
 				//Move the dot
-				dot.move(SCREEN_WIDTH, SCREEN_HEIGHT);
+				dot->move(SCREEN_WIDTH, SCREEN_HEIGHT);
+				chaseDot->move(SCREEN_WIDTH, SCREEN_HEIGHT);
+				client->recieve();
 
 				//Clear screen
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
 
 				//Render objects
-				dot.render(gRenderer);
+				dot->render(gRenderer);
+				chaseDot->render(gRenderer);
 
 				//Update screen
 				SDL_RenderPresent(gRenderer);

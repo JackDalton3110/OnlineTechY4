@@ -27,6 +27,9 @@
     <ClCompile Include="main.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="client.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Dot.h">
@@ -38,6 +41,9 @@
     <ClInclude Include="TCPListener.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Client.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Taking.number.from.string.cpp">
@@ -46,6 +52,9 @@
   </ItemGroup>
   <ItemGroup>
     <Image Include="dot.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="RedDot.bmp">
       <Filter>Resource Files</Filter>
     </Image>
   </ItemGroup>

@@ -4,6 +4,7 @@ Dot::Dot(bool chaser)
 {
 	isChaser = chaser;
 	//Initialize the offsets
+
 	mPosX = 0;
 	mPosY = 0;
 
@@ -40,10 +41,11 @@ void Dot::SetPosition(int x, int y)
 
 //"dot.bmp"
 void Dot::Init(SDL_Renderer *gRenderer)
+
 {
 	if (isChaser)
 	{
-		if (!gDotTexture.loadFromFile("dot.bmp", gRenderer))
+		if (!gDotTexture.loadFromFile("RedDot.bmp", gRenderer))
 		{
 			printf("Failed to load dot texture!\n");
 		}
@@ -139,7 +141,7 @@ void Dot::move(int SCREEN_HEIGHT, int SCREEN_WIDTH)
 	mCenterX = mPosX + (width / 2);
 	mCenterY = mPosY + (height / 2);
 }
-
+									
 void Dot::render(SDL_Renderer *gRenderer)
 {
 	//Show the dot
