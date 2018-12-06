@@ -1,5 +1,8 @@
 #include "Client.h"
 
+
+
+
 	Client::Client()
 	{
 		 ipAddress = "149.153.106.161";         // IP Address of the server
@@ -43,22 +46,23 @@
 			WSACleanup();
 			return false;
 		}
-		return true;
-
 		u_long iMode = 1;
 		ioctlsocket(sock, FIONBIO, &iMode);
+		return true;
 	}
 
 	void Client::recieve()
 	{
-		// Wait for response
-		ZeroMemory(buf, 4096);
-		bytesReceived = recv(sock, buf, 4096, 0);
-		if (bytesReceived > 0)
-		{
-			// Echo response to console
-			cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
-		}
+			// Do-while loop to send and receive data
+			// Wait for response
+			ZeroMemory(buf, 4096);
+			bytesReceived = recv(sock, buf, 4096, 0);
+			if (bytesReceived > 0)
+			{
+				// Echo response to console
+				cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
+			}
+		
 	}
 
 	void Client::sendMessage(std::string message)

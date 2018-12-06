@@ -121,7 +121,6 @@ int main(int argc, char* args[])
 	dot = new Dot(false);
 	chaseDot = new Dot(true);
 	client = new Client();
-	client->run();
 
 	//Start up SDL and create window
 	if (!init())
@@ -147,6 +146,7 @@ int main(int argc, char* args[])
 			dot->SetPosition(100, 300);
 			dot->Init(gRenderer);
 			chaseDot->Init(gRenderer);
+			client->run();
 			
 
 			//While application is running
