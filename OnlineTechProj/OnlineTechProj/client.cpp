@@ -44,6 +44,9 @@
 			return false;
 		}
 		return true;
+
+		u_long iMode = 1;
+		ioctlsocket(sock, FIONBIO, &iMode);
 	}
 
 	void Client::recieve()
