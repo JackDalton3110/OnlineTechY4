@@ -12,8 +12,11 @@
 
 using namespace std;
 
-const int SCREEN_WIDTH = 800;
-const int SCREEN_HEIGHT = 400;
+const int SCREEN_WIDTH = 1200;
+const int SCREEN_HEIGHT = 700;
+
+LTexture winTexture;
+LTexture loseTexture;
 
 bool init();
 bool loadMedia();
@@ -27,6 +30,7 @@ SDL_Renderer* gRenderer;
 Dot* dot;
 Dot* chaseDot;
 Client* client;
+bool joined;
 
 
 
@@ -34,7 +38,7 @@ bool init()
 {
 	//Initialization flag
 	bool success = true;
-
+	client->run();
 	//Initialize SDL
 	if (SDL_Init(SDL_INIT_VIDEO) < 0)
 	{
@@ -88,13 +92,15 @@ bool loadMedia()
 {
 	//Loading success flag
 	bool success = true;
-
-	//Load dot texture
-	/*if (!gDotTexture.loadFromFile("dot.bmp", gRenderer))
+	
+	if (!winTexture.loadFromFile("winScreen.png", gRenderer))
 	{
 		printf("Failed to load dot texture!\n");
-		success = false;
-	}*/
+	}
+	if (!loseTexture.loadFromFile("loseScreen.png", gRenderer))
+	{
+		printf("Failed to load dot texture!\n");
+	}
 
 	return success;
 }
@@ -117,9 +123,6 @@ void close()
 
 int main(int argc, char* args[])
 {
-
-	dot = new Dot(false);
-	chaseDot = new Dot(true);
 	client = new Client();
 
 	//Start up SDL and create window
@@ -143,16 +146,47 @@ int main(int argc, char* args[])
 			SDL_Event e;
 
 			//The dot that will be moving around on the screen
-			dot->SetPosition(100, 300);
-			dot->Init(gRenderer);
-			chaseDot->Init(gRenderer);
-			client->run();
+			 
+			
 			
 
 			//While application is running
 			while (!quit)
 			{
 				//Handle events on queue
+				
+				
+				client->recieve();
+
+				if (client->clientNum == 2 && !joined)
+				{
+					dot = new Dot(true);
+					dot->Init(gRenderer);
+					
+					chaseDot = new Dot(false);
+					chaseDot->Init(gRenderer);
+					joined = true;
+					dot->SetPosition(100, 300);
+
+				}
+				else if (client->clientNum == 3 && !joined)
+				{
+					dot = new Dot(false);
+					chaseDot = new Dot(true);
+					dot->Init(gRenderer);
+					
+					chaseDot->Init(gRenderer);
+					joined = true;
+					dot->SetPosition(100, 300);
+				}
+				
+				if (client->posVector.size() > 1)
+				{
+					chaseDot->SetPosition(client->posVector[0], client->posVector[1]);
+				}
+				client->sendMessage(dot->posMessage);
+				
+				dot->move(SCREEN_WIDTH, SCREEN_HEIGHT);
 				while (SDL_PollEvent(&e) != 0)
 				{
 					//User requests quit
@@ -164,14 +198,10 @@ int main(int argc, char* args[])
 					//Handle input for the dot
 					dot->handleEvent(e);
 					chaseDot->handleEvent(e);
-					
+
 				}
 
-				//Move the dot
-				dot->move(SCREEN_WIDTH, SCREEN_HEIGHT);
-				chaseDot->move(SCREEN_WIDTH, SCREEN_HEIGHT);
-				client->recieve();
-
+				
 				//Clear screen
 				SDL_SetRenderDrawColor(gRenderer, 0xFF, 0xFF, 0xFF, 0xFF);
 				SDL_RenderClear(gRenderer);
@@ -179,10 +209,23 @@ int main(int argc, char* args[])
 				//Render objects
 				dot->render(gRenderer);
 				chaseDot->render(gRenderer);
-
+				if (client->gameOver)
+				{
+					if (dot->isChaser == true)
+					{
+						SDL_RenderClear(gRenderer);
+						winTexture.render(0, 0, gRenderer);
+					}
+					else if(!dot->isChaser)
+					{
+						SDL_RenderClear(gRenderer);
+						loseTexture.render(0, 0, gRenderer);
+					}
+				}
 				//Update screen
 				SDL_RenderPresent(gRenderer);
 			}
+			
 		}
 	}
 

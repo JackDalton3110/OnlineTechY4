@@ -8,12 +8,13 @@
 class Dot
 {
 public:
+	bool isChaser;
 	//The dimensions of the dot
 	static const int DOT_WIDTH = 20;
 	static const int DOT_HEIGHT = 20;
 
 	//Maximum axis velocity of the dot
-	static const int DOT_VEL = 10;
+	static const int DOT_VEL = 3;
 
 	Dot() {};
 	//Initializes the variables
@@ -31,6 +32,7 @@ public:
 	void render(SDL_Renderer *gRenderer);
 
 	std::string GetPosAsString();
+	
 
 	bool Checkcollision(int centerX, int centerY);
 
@@ -41,9 +43,12 @@ public:
 
 	void SetPosition(int x, int y);
 
+	std::string posMessage;
+
 private:
 	bool isLocalplayer;
-	bool isChaser;
+	
+
 
 	//The X and Y offsets of the dot
 	int mPosX, mPosY;

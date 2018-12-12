@@ -7,7 +7,7 @@ Dot::Dot(bool chaser)
 
 	mPosX = 0;
 	mPosY = 0;
-
+	
 	//Initialize the velocity
 	mVelX = 0;
 	mVelY = 0;
@@ -21,8 +21,8 @@ Dot::Dot(bool chaser)
 		gDotTexture.setColor(66, 69, 244);
 	}
 
-	width = 10;
-	height = 10;
+	width = 20;
+	height = 20;
 }
 
 Dot::~Dot()
@@ -140,6 +140,9 @@ void Dot::move(int SCREEN_HEIGHT, int SCREEN_WIDTH)
 
 	mCenterX = mPosX + (width / 2);
 	mCenterY = mPosY + (height / 2);
+
+	posMessage = "Position/" + std::to_string(mPosX) + "/" + std::to_string(mPosY)+"/";
+	
 }
 									
 void Dot::render(SDL_Renderer *gRenderer)

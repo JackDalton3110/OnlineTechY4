@@ -2,7 +2,9 @@
 #include <iostream>
 #include <string>
 #include <WS2tcpip.h>
+#include <vector>
 #pragma comment(lib, "ws2_32.lib")
+
 
 using namespace std;
 
@@ -14,6 +16,10 @@ public:
 	void recieve();
 	void sendMessage(std::string message);
 	void close();
+	std::vector <float> posVector;
+	int clientNum = 0;
+	bool join;
+	bool gameOver = false;
 
 private:
 

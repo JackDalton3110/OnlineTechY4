@@ -1,8 +1,4 @@
 #include "Client.h"
-
-
-
-
 	Client::Client()
 	{
 		 ipAddress = "149.153.106.161";         // IP Address of the server
@@ -59,8 +55,45 @@
 			bytesReceived = recv(sock, buf, 4096, 0);
 			if (bytesReceived > 0)
 			{
+				posVector.clear();
 				// Echo response to console
 				cout << "SERVER> " << string(buf, 0, bytesReceived) << endl;
+
+				std::string pos2 = string(buf, 0, bytesReceived);
+				size_t pos = 0;
+				std::string token;
+
+				std::string delimiter = "/";
+				pos = pos2.find(delimiter);
+				token = pos2.substr(0, pos);
+				pos2.erase(0, pos + delimiter.length());
+
+				if (token == "Position")
+				{
+					while ((pos = pos2.find(delimiter)) != std::string::npos)
+					{
+						token = pos2.substr(0, pos);
+						posVector.push_back(atof(token.c_str()));
+						pos2.erase(0, pos + delimiter.length());
+					}
+				}
+
+				if (token == "Welcome to the Awesome Chat Server player:")
+				{
+					while ((pos = pos2.find(delimiter)) != std::string::npos)
+					{
+						token = pos2.substr(0, pos);
+						clientNum = atof(token.c_str());
+						join = true;
+						pos2.erase(0, pos + delimiter.length());
+					}
+				}
+
+				if (token == "EndGame")
+				{
+					gameOver = true;
+				}
+
 			}
 		
 	}
